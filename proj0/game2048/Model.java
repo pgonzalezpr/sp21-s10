@@ -2,10 +2,11 @@ package game2048;
 
 import java.util.Formatter;
 import java.util.Observable;
+import java.util.Iterator;
 
 
 /** The state of a game of 2048.
- *  @author TODO: YOUR NAME HERE
+ *  @author pgonzalezpr
  */
 public class Model extends Observable {
     /** Current contents of the board. */
@@ -109,16 +110,63 @@ public class Model extends Observable {
     public boolean tilt(Side side) {
         boolean changed;
         changed = false;
+        board.setViewingPerspective(side);
 
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
 
+        for (int col = 0; col < board.size(); col++) {
+            boolean moveResult = tiltColumn(col);
+            if (moveResult) {
+                changed = true;
+            }
+        }
+
+        board.setViewingPerspective(Side.NORTH);
         checkGameOver();
         if (changed) {
             setChanged();
         }
+
         return changed;
+    }
+
+    /** Tilts the given column in the north direction.
+     *  Returns true if the column changed.
+     */
+    private boolean tiltColumn(int col) {
+        boolean change = false;
+        int limit = board.size();
+
+        for (int row = board.size() - 2; row >= 0; row--) {
+            if (board.tile(col, row) == null) {
+                continue;
+            }
+
+            int r = row + 1;
+            while (r < limit) {
+                if (board.tile(col, r) == null && r == limit - 1) {
+                    board.move(col, r, board.tile(col, row));
+                    change = true;
+                    r++;
+                } else if (board.tile(col, r) == null) {
+                    r++;
+                } else if (board.tile(col, r).value() == board.tile(col, row).value()) {
+                    board.move(col, r, board.tile(col, row));
+                    change = true;
+                    limit = r;
+                    score += board.tile(col, r).value();
+                } else if (r != row + 1) {
+                    board.move(col, r - 1, board.tile(col, row));
+                    change = true;
+                    limit = r;
+                } else {
+                    break;
+                }
+            }
+        }
+        return change;
     }
 
     /** Checks if the game is over and sets the gameOver variable
@@ -138,6 +186,11 @@ public class Model extends Observable {
      * */
     public static boolean emptySpaceExists(Board b) {
         // TODO: Fill in this function.
+        for (Tile tile : b) {
+            if (tile == null) {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -148,6 +201,11 @@ public class Model extends Observable {
      */
     public static boolean maxTileExists(Board b) {
         // TODO: Fill in this function.
+        for (Tile tile : b) {
+            if (tile != null && tile.value() == MAX_PIECE) {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -159,6 +217,25 @@ public class Model extends Observable {
      */
     public static boolean atLeastOneMoveExists(Board b) {
         // TODO: Fill in this function.
+        if (emptySpaceExists(b)) {
+            return true;
+        }
+        for (Tile tile : b) {
+            int row = tile.row();
+            int col = tile.col();
+            int val = tile.value();
+            int upper_limit = b.size() - 1;
+
+            if (row != 0 && b.tile(col, row - 1).value() == val) {
+                return true;
+            } else if (row != upper_limit && b.tile(col, row + 1).value() == val) {
+                return true;
+            } else if (col != 0 && b.tile(col - 1, row).value() == val) {
+                return true;
+            } else if (col != upper_limit && b.tile(col + 1, row).value() == val) {
+                return true;
+            }
+        }
         return false;
     }
 
