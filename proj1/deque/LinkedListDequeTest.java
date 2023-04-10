@@ -1,8 +1,6 @@
 package deque;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
-
+import org.junit.*;
 
 /** Performs some basic linked list tests. */
 public class LinkedListDequeTest {
@@ -55,6 +53,7 @@ public class LinkedListDequeTest {
 		// should be empty
 		assertTrue("lld1 should be empty after removal", lld1.isEmpty());
         */
+
     }
 
     @Test
