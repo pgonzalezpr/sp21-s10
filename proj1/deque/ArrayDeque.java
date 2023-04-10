@@ -192,6 +192,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
                 if (!this.get(index).equals(other.get(index))) {
                     return false;
                 }
+                index++;
             }
             return true;
         }

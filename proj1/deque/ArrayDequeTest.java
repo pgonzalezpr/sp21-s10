@@ -83,6 +83,25 @@ public class ArrayDequeTest {
     }
 
     @Test
+    /* check if equals method works correctly for equals and non-equal input */
+    public void equalDequeTest() {
+        ArrayDeque<Integer> lld1 = new ArrayDeque<>();
+        ArrayDeque<Integer> lld2 = new ArrayDeque<>();
+        ArrayDeque<Integer> lld3 = new ArrayDeque<>();
+
+        for (int i = 0; i < 10; i++) {
+            lld1.addFirst(i);
+            lld2.addFirst(i);
+            lld3.addFirst(i * 2);
+        }
+
+        assertTrue(lld1.equals(lld2));
+        assertFalse(lld1.equals(lld3));
+        assertFalse(lld2.equals(lld3));
+
+    }
+
+    @Test
     /* Add large number of elements to deque; check if order is correct. */
     public void bigLLDequeTest() {
 
