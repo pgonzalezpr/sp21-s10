@@ -14,24 +14,6 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         nextLast = 5;
     }
 
-    public static void main(String[] args) {
-        ArrayDeque<Integer> deque = new ArrayDeque<>();
-        for (int i = 0; i < 20; i++) {
-            deque.addLast(i);
-        }
-        deque.printDeque();
-        deque.removeLast();
-        deque.removeFirst();
-        deque.printDeque();
-        System.out.println(deque.get(15));
-        System.out.println(deque.size());
-        for (int i = 0; i < 11; i ++) {
-            deque.removeFirst();
-        }
-        deque.printDeque();
-        System.out.println(deque.size());
-    }
-
     @Override
     public void addFirst(T item) {
         if (items[nextFirst] != null) {
@@ -47,7 +29,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         }
     }
 
-    public void resize(int capacity) {
+    private void resize(int capacity) {
         T[] newItems = (T[]) new Object[capacity];
 
         int rightElements = 0;
@@ -87,7 +69,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     }
 
 
-    public int lastFirstPos() {
+    private int lastFirstPos() {
         if (nextFirst + 1 == items.length) {
             return 0;
         } else {
@@ -95,7 +77,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         }
     }
 
-    public int lastLastPos() {
+    private int lastLastPos() {
         if (nextLast - 1 < 0) {
             return items.length - 1;
         } else {

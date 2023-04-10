@@ -7,21 +7,6 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     private DLLNode sentFront;
     private DLLNode sentBack;
 
-    public static void main(String[] args) {
-        LinkedListDeque<String> deque = new LinkedListDeque<>();
-        LinkedListDeque<String> deque1 = new LinkedListDeque<>();
-
-        deque.addFirst("Middle");
-        deque.addFirst("First");
-        deque.addLast("Back");
-
-        deque1.addFirst("Middle");
-        deque1.addFirst("First");
-        deque1.addLast("Back");
-
-        System.out.println(deque.getRecursive(2));
-    }
-
     public LinkedListDeque() {
         sentFront = new DLLNode(null, null, null);
         sentBack = new DLLNode(null, null, null);
