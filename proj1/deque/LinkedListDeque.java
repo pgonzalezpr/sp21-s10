@@ -110,17 +110,18 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         if (this == obj) {
             return true;
         }
-        if (obj == null || obj.getClass() != this.getClass()) {
+        if (obj == null || !(obj instanceof Deque)) {
             return false;
         }
-        LinkedListDeque other = (LinkedListDeque) obj;
+
+        Deque other = (Deque) obj;
         if (this.size() != other.size()) {
             return false;
         }
 
-        Iterator<T> otherIterator = other.iterator();
-        for (T item : this) {
-            if (!item.equals(otherIterator.next())) {
+        int size = size();
+        for (int i = 0; i < size; i++) {
+            if (!this.get(i).equals(other.get(i))) {
                 return false;
             }
         }
@@ -145,10 +146,10 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         }
     }
     private class DLLNode {
-        public T item;
-        public DLLNode prev;
-        public DLLNode next;
-        public DLLNode(T i, DLLNode p, DLLNode n) {
+        private T item;
+        private DLLNode prev;
+        private DLLNode next;
+        private DLLNode(T i, DLLNode p, DLLNode n) {
             item = i;
             prev = p;
             next = n;

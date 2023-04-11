@@ -88,14 +88,17 @@ public class ArrayDequeTest {
         ArrayDeque<Integer> lld1 = new ArrayDeque<>();
         ArrayDeque<Integer> lld2 = new ArrayDeque<>();
         ArrayDeque<Integer> lld3 = new ArrayDeque<>();
+        LinkedListDeque<Integer> lld4 = new LinkedListDeque<>();
 
         for (int i = 0; i < 10; i++) {
             lld1.addFirst(i);
             lld2.addFirst(i);
             lld3.addFirst(i * 2);
+            lld4.addFirst(i);
         }
 
         assertTrue(lld1.equals(lld2));
+        assertTrue(lld1.equals(lld4));
         assertFalse(lld1.equals(lld3));
         assertFalse(lld2.equals(lld3));
 
