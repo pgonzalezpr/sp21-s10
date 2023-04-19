@@ -1,6 +1,8 @@
 package capers;
 
 import java.io.File;
+import java.io.IOException;
+import static capers.Dog.*;
 import static capers.Utils.*;
 
 /** A repository for Capers 
@@ -18,8 +20,10 @@ public class CapersRepository {
     static final File CWD = new File(System.getProperty("user.dir"));
 
     /** Main metadata folder. */
-    static final File CAPERS_FOLDER = null; // TODO Hint: look at the `join`
-                                            //      function in Utils
+    static final File CAPERS_FOLDER = join(CWD, ".capers");
+    // TODO Hint: look at the `join` function in Utils
+
+    static final File STORY = join(CAPERS_FOLDER, "story");
 
     /**
      * Does required filesystem operations to allow for persistence.
@@ -32,6 +36,13 @@ public class CapersRepository {
      */
     public static void setupPersistence() {
         // TODO
+        CAPERS_FOLDER.mkdir();
+        DOG_FOLDER.mkdir();
+        try {
+            STORY.createNewFile();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -41,6 +52,10 @@ public class CapersRepository {
      */
     public static void writeStory(String text) {
         // TODO
+        String currentText = readContentsAsString(STORY);
+        currentText = currentText + text + "\n";
+        writeContents(STORY, currentText);
+        System.out.println(currentText);
     }
 
     /**
@@ -50,15 +65,25 @@ public class CapersRepository {
      */
     public static void makeDog(String name, String breed, int age) {
         // TODO
+        Dog d = new Dog(name, breed, age);
+        d.saveDog();
+        System.out.println(d);
     }
 
     /**
-     * Advances a dog's age persistently and prints out a celebratory message.
+     * Advances a dog's age persistently and prints o        try {
+            STORY.createNewFile();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }ut a celebratory message.
      * Also prints out the dog's information using toString().
      * Chooses dog to advance based on the first non-command argument of args.
      * @param name String name of the Dog whose birthday we're celebrating.
      */
     public static void celebrateBirthday(String name) {
         // TODO
+        Dog d = fromFile(name);
+        d.haveBirthday();
+        d.saveDog();
     }
 }
