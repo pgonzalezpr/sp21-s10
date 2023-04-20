@@ -4,8 +4,8 @@ import java.util.Iterator;
 import java.util.Set;
 
 public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
-    BSTNode root;
-    int size = 0;
+    private BSTNode root;
+    private int size = 0;
 
     private class BSTNode {
         private K key;
