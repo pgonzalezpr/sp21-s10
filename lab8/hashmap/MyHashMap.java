@@ -102,6 +102,28 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         return Math.floorMod(key.hashCode(), this.buckets.length);
     }
 
+    private int hash(K key, int bucketLength) {
+        return Math.floorMod(key.hashCode(), bucketLength);
+    }
+
+    private void resize() {
+        Collection<Node>[] newBuckets = createTable(this.buckets.length * 2);
+
+        for (Collection<Node> c : this.buckets) {
+            if (c != null) {
+                for (Node node : c) {
+                    int hash = hash(node.key, newBuckets.length);
+                    if (newBuckets[hash] == null) {
+                        newBuckets[hash] = createBucket();
+                    }
+                    newBuckets[hash].add(node);
+                }
+            }
+        }
+
+        this.buckets = newBuckets;
+    }
+
     // TODO: Implement the methods of the Map61B Interface below
     // Your code won't compile until you do so!
 
@@ -158,6 +180,10 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         bucket.add(createNode(key, value));
         this.size++;
         this.keySet.add(key);
+
+        if (this.size / this.buckets.length > this.maxLoad) {
+            resize();
+        }
     }
 
     @Override

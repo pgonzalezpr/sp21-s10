@@ -1,0 +1,19 @@
+InsertRandomSpeedTest 1: 10000 strings of length 6
+    class hashmap.MyHashMapALBuckets: 0.03 sec
+    class hashmap.MyHashMapLLBuckets: 0.03 sec
+    class hashmap.MyHashMapTSBuckets: 0.06 sec
+    class hashmap.MyHashMapHSBuckets: 0.05 sec
+    class hashmap.MyHashMapPQBuckets: 0.06 sec
+    class hashmap.ULLMap: 0.30 sec
+    class hashmap.MyHashMap: 0.02 sec
+    Java's Built-in HashMap: 0.01 sec
+
+InsertRandomSpeedTest 2: 100000 strings of length 6
+    class hashmap.MyHashMapALBuckets: 0.14 sec
+    class hashmap.MyHashMapLLBuckets: 0.19 sec
+    class hashmap.MyHashMapTSBuckets: 0.18 sec
+    class hashmap.MyHashMapHSBuckets: 0.15 sec
+    class hashmap.MyHashMapPQBuckets: 0.14 sec
+    class hashmap.ULLMap: StackOverFlowError
+    class hashmap.MyHashMap: 0.13 sec
+    Java's Built-in HashMap: 0.13 sec
