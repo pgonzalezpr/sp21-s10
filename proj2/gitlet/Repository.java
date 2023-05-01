@@ -72,7 +72,8 @@ public class Repository {
 
     public static void initRepository() {
         if (GITLET_DIR.isDirectory()) {
-            System.out.println("A Gitlet version-control system already exists in the current directory.");
+            System.out.println("A Gitlet version-control system " +
+                    "already exists in the current directory.");
             System.exit(0);
         }
         setupEmptyRepository();
@@ -412,10 +413,10 @@ public class Repository {
     private static void checkUntrackedFiles(Commit commit) {
         Commit currentHeadCommit = getLastCommit();
         for (String filename : commit.getBlobs().keySet()) {
-            if (join(CWD, filename).isFile() &&
-                    currentHeadCommit.getBlobID(filename) == null) {
-                System.out.println("There is an untracked file in the way; " +
-                        "delete it, or add and commit it first.");
+            if (join(CWD, filename).isFile()
+                    && currentHeadCommit.getBlobID(filename) == null) {
+                System.out.println("There is an untracked file in the way; "
+                        + "delete it, or add and commit it first.");
                 System.exit(0);
             }
         }
