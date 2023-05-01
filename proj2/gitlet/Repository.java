@@ -107,7 +107,8 @@ public class Repository {
         }
 
         List<String> stagedFiles = plainFilenamesIn(STAGING_DIR);
-        if (stagedFiles.isEmpty()) {
+        List<String> removalFiles = plainFilenamesIn(REMOVAL_DIR);
+        if (stagedFiles.isEmpty() && removalFiles.isEmpty()) {
             System.out.println("No changes added to the commit.");
             System.exit(0);
         }
@@ -122,7 +123,7 @@ public class Repository {
             newCommit.addBlob(file, blobID);
         }
 
-        for (String file : plainFilenamesIn(REMOVAL_DIR)) {
+        for (String file : removalFiles) {
             newCommit.removeBlob(file);
         }
 
