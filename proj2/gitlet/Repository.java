@@ -2,7 +2,6 @@ package gitlet;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Formatter;
@@ -11,17 +10,13 @@ import java.util.List;
 
 import static gitlet.Utils.*;
 
-// TODO: any imports you need here
-
 /** Represents a gitlet repository.
- *  TODO: It's a good idea to give a description here of what else this Class
  *  does at a high level.
  *
  *  @author TODO
  */
 public class Repository {
     /**
-     * TODO: add instance variables here.
      *
      * List all instance variables of the Repository class here with a useful
      * comment above them describing what that variable represents and how that
@@ -39,8 +34,6 @@ public class Repository {
     public static final File STAGING_DIR = join(GITLET_DIR, "staging");
     public static final File REMOVAL_DIR = join(GITLET_DIR, "removal");
     public static final File BRANCHES_DIR = join(GITLET_DIR, "branches");
-
-    /* TODO: fill in the rest of this class. */
 
     public static void checkGitletDirectory() {
         if (!GITLET_DIR.isDirectory()) {
@@ -186,7 +179,6 @@ public class Repository {
                 found = true;
             }
         }
-
         if (!found) {
             System.out.println("Found no commit with that message.");
         }
