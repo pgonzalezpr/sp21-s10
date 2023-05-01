@@ -178,11 +178,17 @@ public class Repository {
 
     public static void findCommitsByMessage(String message) {
         Commit commit;
+        boolean found = false;
         for (String commitID : plainFilenamesIn(COMMITS_DIR)) {
             commit = getCommitByID(commitID);
             if (commit.getMessage().equals(message)) {
                 System.out.println(commitID);
+                found = true;
             }
+        }
+
+        if (!found) {
+            System.out.println("Found no commit with that message.");
         }
     }
 
