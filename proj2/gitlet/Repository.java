@@ -92,7 +92,7 @@ public class Repository {
         String fileSha1 = sha1(fileContents);
         String currentBlob = currentCommit.getBlobID(fileName);
 
-        if ( (currentBlob != null) && currentBlob.equals(fileSha1)) {
+        if ((currentBlob != null) && currentBlob.equals(fileSha1)) {
             join(STAGING_DIR, fileName).delete();
         } else {
             writeContents(join(STAGING_DIR, fileName), fileContents);
