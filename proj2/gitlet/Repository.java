@@ -370,7 +370,8 @@ public class Repository {
                     }
                 }
 
-                if (!givenCommit.getBlobID(filename).equals(
+                if (givenFiles.contains(filename) && currentFiles.contains(filename)
+                        && !givenCommit.getBlobID(filename).equals(
                         currentCommit.getBlobID(filename))) {
                     writeContents(join(CWD, filename), buildMergeString(
                             currentCommit, givenCommit, filename));
