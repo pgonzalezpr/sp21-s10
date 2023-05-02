@@ -348,6 +348,7 @@ public class Repository {
                         if (!givenCommit.getBlobID(filename).equals(
                                 splitCommit.getBlobID(filename))) {
                             writeBlobToCWDAndStaging(givenCommit, filename);
+                            continue;
                         }
                     } else {
                         try {
@@ -357,6 +358,7 @@ public class Repository {
                             throw new RuntimeException(e);
                         }
                         join(CWD, filename).delete();
+                        continue;
                     }
                 }
 
@@ -367,6 +369,7 @@ public class Repository {
                             && !currentCommit.getBlobID(filename).equals(
                                     splitCommit.getBlobID(filename))) {
                         writeBlobToCWDAndStaging(currentCommit, filename);
+                        continue;
                     }
                 }
 
