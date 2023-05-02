@@ -374,14 +374,22 @@ public class Repository {
                 }
 
                 if (givenFiles.contains(filename) && currentFiles.contains(filename)
-                        && !givenCommit.getBlobID(filename).equals(
+                        && givenCommit.getBlobID(filename).equals(
                         currentCommit.getBlobID(filename))) {
-                    writeContents(join(CWD, filename), buildMergeString(
-                            currentCommit, givenCommit, filename));
-                    writeContents(join(STAGING_DIR, filename), buildMergeString(
-                            currentCommit, givenCommit, filename));
-                    conflict = true;
+                    continue;
                 }
+
+                if (!givenFiles.contains(filename)
+                        && !currentFiles.contains(filename)){
+                    continue;
+                }
+                else {
+                }
+                writeContents(join(CWD, filename), buildMergeString(
+                        currentCommit, givenCommit, filename));
+                writeContents(join(STAGING_DIR, filename), buildMergeString(
+                        currentCommit, givenCommit, filename));
+                conflict = true;
 
             } else {
                 if (!givenFiles.contains(filename)
