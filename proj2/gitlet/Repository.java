@@ -416,7 +416,7 @@ public class Repository {
     private static void writeBlobToCWDAndStaging(Commit commit, String filename) {
         File file = join(BLOBS_DIR, commit.getBlobID(filename));
         writeContents(join(CWD, filename), readContents(file));
-        writeContents(STAGING_DIR, readContents(file));
+        writeContents(join(STAGING_DIR, filename), readContents(file));
     }
 
     private static void validateMerge(String given) {
