@@ -418,6 +418,10 @@ public class Repository {
                     conflict = true;
                     continue;
                 }
+                if (!givenFiles.contains(filename)
+                        && !currentFiles.contains(filename)) {
+                    continue;
+                }
 
                 if (!givenFiles.contains(filename)
                         || !currentFiles.contains(filename)) {
