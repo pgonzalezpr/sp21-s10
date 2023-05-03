@@ -130,6 +130,39 @@ public class Repository {
         clearDirectory(REMOVAL_DIR);
     }
 
+    private static void mergeCommit(String message, String[] parents) {
+        if (message.isEmpty()) {
+            System.out.println("Please enter a commit message.");
+            System.exit(0);
+        }
+
+        List<String> stagedFiles = plainFilenamesIn(STAGING_DIR);
+        List<String> removalFiles = plainFilenamesIn(REMOVAL_DIR);
+        if (stagedFiles.isEmpty() && removalFiles.isEmpty()) {
+            System.out.println("No changes added to the commit.");
+            System.exit(0);
+        }
+
+        Commit currentCommit = getLastCommit();
+        Commit newCommit = new Commit(message, parents,
+                new Date(System.currentTimeMillis()), currentCommit.getBlobs());
+
+        for (String file : stagedFiles) {
+            byte[] blob = readContents(join(STAGING_DIR, file));
+            String blobID = persistBlob(blob);
+            newCommit.addBlob(file, blobID);
+        }
+
+        for (String file : removalFiles) {
+            newCommit.removeBlob(file);
+        }
+
+        String newCommitID = persistCommit(newCommit);
+        updateHeadCommit(newCommitID);
+        clearDirectory(STAGING_DIR);
+        clearDirectory(REMOVAL_DIR);
+    }
+
     public static void remove(String filename) {
         Commit lastCommit = getLastCommit();
         if (lastCommit.getBlobID(filename) != null) {
@@ -370,12 +403,24 @@ public class Repository {
                                     splitCommit.getBlobID(filename))) {
                         writeBlobToCWDAndStaging(currentCommit, filename);
                         continue;
+                    } else if (!currentFiles.contains(filename)) {
+                        continue;
                     }
                 }
 
                 if (givenFiles.contains(filename) && currentFiles.contains(filename)
                         && !givenCommit.getBlobID(filename).equals(
                         currentCommit.getBlobID(filename))) {
+                    writeContents(join(CWD, filename), buildMergeString(
+                            currentCommit, givenCommit, filename));
+                    writeContents(join(STAGING_DIR, filename), buildMergeString(
+                            currentCommit, givenCommit, filename));
+                    conflict = true;
+                    continue;
+                }
+
+                if (!givenFiles.contains(filename)
+                        || !currentFiles.contains(filename)) {
                     writeContents(join(CWD, filename), buildMergeString(
                             currentCommit, givenCommit, filename));
                     writeContents(join(STAGING_DIR, filename), buildMergeString(
@@ -405,23 +450,14 @@ public class Repository {
                                 currentCommit, givenCommit, filename));
                         conflict = true;
                     }
-                    continue;
-                }
-
-                if (!givenFiles.contains(filename)
-                        || !currentFiles.contains(filename)) {
-                    writeContents(join(CWD, filename), buildMergeString(
-                            currentCommit, givenCommit, filename));
-                    writeContents(join(STAGING_DIR, filename), buildMergeString(
-                            currentCommit, givenCommit, filename));
-                    conflict = true;
                 }
             }
         }
 
 
-        commit("Merged " + given + " into "
-                + readContentsAsString(HEAD) + ".");
+        mergeCommit("Merged " + given + " into "
+                + readContentsAsString(HEAD) + ".",
+                new String[]{currentID, givenID});
         if (conflict) {
             System.out.println("Encountered a merge conflict.");
         }
